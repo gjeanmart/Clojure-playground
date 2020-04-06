@@ -3,6 +3,13 @@
 
 Cheatsheet to refresh memory on Clojure and ClojureScript
 
+
+# Teminology
+
+- Leiningen: TODOs
+- shadow-cljs: TODO
+
+
 ## Installation
 
 ### On Linux (Ubuntu)
@@ -491,6 +498,10 @@ Custom functions / code generating tool
 ```
 
 
+### Others syntax
+
+
+
 
 ## Complex program
 
@@ -714,13 +725,67 @@ Try it: http://localhost:3000/api/say-hi?name=greg
 
 ## ClojurScript
 
+In this section, we will describe step by step how to build a clojurescript SPA web application using re-frame framework.
+
 ### SPA with re-frame
 
-0. Create a new project with the following options
+1. Create a new project with the following options
 
 ```shell
-$ lein new re-frame multis-sablier +garden +re-com +routes +test +less +10x
+$ lein new re-frame clojurescript-todo +garden +re-com +routes +test +less +10x
+Generating re-frame project.
+
+$ cd clojurescript-todo
 ```
+
+
+
+2. Run the project in dev mode
+
+```shell
+$ lein dev
+Compiling Garden...
+Compiling "resources/public/css/screen.css"...
+Wrote: resources/public/css/screen.css
+Successful
+Warning: Nashorn engine is planned to be removed from a future JDK release
+Compiling {less} css:
+less/site.less => resources/public/css/site.css
+Done.
+running: npm install --save --save-exact react@16.9.0 react-dom@16.9.0 highlight.js@9.15.10 react-highlight.js@1.0.7
+npm notice created a lockfile as package-lock.json. You should commit this file.
+npm WARN clojurescript-todo No repository field.
+npm WARN clojurescript-todo No license field.
+
++ react-highlight.js@1.0.7
++ highlight.js@9.15.10
++ react-dom@16.9.0
++ react@16.9.0
+added 10 packages from 272 contributors and audited 30 packages in 3.337s
+found 0 vulnerabilities
+
+shadow-cljs - HTTP server available at http://localhost:8280
+shadow-cljs - HTTP server available at http://localhost:8290
+shadow-cljs - server version: 2.8.83 running at http://localhost:9630
+shadow-cljs - nREPL server started on port 8777
+shadow-cljs - watching build :app
+[:app] Configuring build.
+[:app] Compiling ...
+```
+
+Alternatively, you can launch the app in dev mode via vscode (+ calva) like this (Make sure first you open a file wihthin the project like `project.clj`):
+
+![](https://i.imgur.com/zNfo7Ar.png)
+![](https://i.imgur.com/WTenCKN.png)
+![](https://i.imgur.com/J8Xwxgr.png)
+![](https://i.imgur.com/rU3ujaN.png)
+
+
+You can now access the app in dev mode via [http://localhost:8280](http://localhost:8280). The REPL is launched so it includes the auto-reload and it's easy to debug. 
+
+![](https://i.imgur.com/goCIOiT.png)
+
+
 
 
 
