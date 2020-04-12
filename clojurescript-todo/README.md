@@ -12,7 +12,6 @@ you.
 * Languages
   - Front end ([re-frame](https://github.com/day8/re-frame)): [ClojureScript](https://clojurescript.org/) (CLJS)
   - CSS compilation ([`lein-garden`](https://github.com/noprompt/lein-garden)): [Clojure](https://clojure.org/)
-  - CSS compilation ([`lein-less`](https://github.com/montoux/lein-less)): [Less](http://lesscss.org/features/)
 * Dependencies
   - UI framework: [re-frame](https://github.com/day8/re-frame)
   ([docs](https://github.com/day8/re-frame/blob/master/docs/README.md),
@@ -26,7 +25,6 @@ you.
   - Project task & dependency management: [Leiningen](https://github.com/technomancy/leiningen)
   - CLJS compilation, REPL, & hot reload: [`shadow-cljs`](https://github.com/thheller/shadow-cljs)
   - CSS compilation: [`lein-garden`](https://github.com/noprompt/lein-garden)
-  - CSS compilation: [`lein-less`](https://github.com/montoux/lein-less)
   - Test framework: [cljs.test](https://clojurescript.org/tools/testing)
   - Test runner: [Karma](https://github.com/karma-runner/karma)
 * Development tools
@@ -39,7 +37,6 @@ you.
 * [`dev/`](dev/): source files compiled only with the [dev](#running-the-app) profile
   - [`cljs/user.cljs`](dev/cljs/user.cljs): symbols for use during development in the
 [ClojureScript REPL](#connecting-to-the-browser-repl-from-a-terminal)
-* [`less/`](less/): CSS compilation source files ([Less](http://lesscss.org/features/))
 * [`resources/public/`](resources/public/): SPA root directory;
 [dev](#running-the-app) / [prod](#production) profile depends on the most recent build
   - [`vendor/`](resources/public/vendor/): UI component CSS, fonts, and images
@@ -55,8 +52,6 @@ you.
     - Deleted on `lein clean` (run by all `lein` aliases before building)
     - `css/`: compiled CSS (`lein-garden`, can also be
 [compiled manually](#compiling-css-with-lein-garden))
-    - `css/`: compiled CSS (`lein-less`, can also be
-[compiled manually](#compiling-css-with-lein-less))
     - `js/compiled/`: compiled CLJS (`shadow-cljs`)
       - Not tracked in source control; see [`.gitignore`](.gitignore)
 * [`src/clj/clojurescript_todo/`](src/clj/clojurescript_todo/): CSS compilation source files (Clojure,
@@ -214,26 +209,6 @@ The `resources/public/css/` directory is created, containing the compiled CSS fi
 Enable automatic compiling of CSS files when source `.clj` files are changed:
 ```sh
 lein garden auto
-```
-
-### Compiling CSS with `lein-less`
-
-Use [Less](http://lesscss.org/features/) to edit styles in `.less` files located in the
-[`less/`](less/) directory. CSS files are compiled automatically on [`dev`](#running-the-app)
-or [`prod`](#production) build.
-
-Manually compile CSS files:
-```sh
-lein less once
-```
-
-The `resources/public/css/` directory is created, containing the compiled CSS files.
-
-#### Compiling CSS with `lein-less` on change
-
-Enable automatic compiling of CSS files when source `.less` files are changed:
-```sh
-lein less auto
 ```
 
 ### Running `shadow-cljs` Actions

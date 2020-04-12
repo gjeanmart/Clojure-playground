@@ -2,12 +2,8 @@ body {
   overflow-x: hidden;
 }
 
-.only-mobile {
+#menu-toggle {
   display: block;
-}
-
-.only-desktop {
-  display: none;
 }
 
 #sidebar-wrapper {
@@ -42,12 +38,8 @@ body {
 
 @media (min-width: 768px) {
 
-  .only-mobile {
+  #menu-toggle {
     display: none;
-  }
-  
-  .only-desktop {
-    display: block;
   }
   
   #sidebar-wrapper {
@@ -77,8 +69,4 @@ body {
 
 .task input {
   margin-right: 15px;
-}
-
-.cursor-pointer {
-  cursor: pointer;
 }

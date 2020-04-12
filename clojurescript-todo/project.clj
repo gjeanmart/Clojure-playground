@@ -1,4 +1,4 @@
-(defproject clojurescript-todo "0.1.0-SNAPSHOT"
+(defproject todo "0.1.0-SNAPSHOT"
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [org.clojure/clojurescript "1.10.597"
                   :exclusions [com.google.javascript/closure-compiler-unshaded
@@ -7,20 +7,20 @@
                  [thheller/shadow-cljs "2.8.83"]
                  [reagent "0.9.1"]
                  [re-frame "0.11.0"]
-                 [re-com "2.7.0"]
-                 [secretary "1.2.3"]
-                 [garden "1.3.9"]
-                 [ns-tracker "0.4.0"]]
+                 [secretary "1.2.3"] ; route
+                 [garden "1.3.9"] ; css copilation
+                 [funcool/cuerdas "2.2.0"] ; string manipulation
+                 [com.degel/re-frame-firebase "0.8.0"] ; firebase
+                 [com.andrewmcveigh/cljs-time "0.5.2"]] ; datetime
 
   :plugins [[lein-garden "0.3.0"]
-            [lein-less "1.7.5"]
             [lein-shell "0.5.0"]]
 
   :min-lein-version "2.5.3"
 
   :source-paths ["src/clj" "src/cljs"]
 
-  :test-paths   ["t(+)est/cljs"]
+  :test-paths   ["test/cljs"]
 
   :clean-targets ^{:protect false} ["resources/public/js/compiled" "target"
                                     "test/js"
@@ -29,12 +29,9 @@
 
   :garden {:builds [{:id           "screen"
                      :source-paths ["src/clj"]
-                     :stylesheet   clojurescript-todo.css/screen
+                     :stylesheet   todo.css/screen
                      :compiler     {:output-to     "resources/public/css/screen.css"
                                     :pretty-print? true}}]}
-
-  :less {:source-paths ["less"]
-         :target-path  "resources/public/css"}
 
   :shell {:commands {"open" {:windows ["cmd" "/c" "start"]
                              :macosx  "open"
@@ -54,11 +51,9 @@
   :profiles
   {:dev
    {:dependencies [[binaryage/devtools "1.0.0"]
-                   [day8.re-frame/re-frame-10x "0.5.1"]
                    [day8.re-frame/tracing "0.5.3"]]
     :source-paths ["dev"]}
 
    :prod { :dependencies [[day8.re-frame/tracing-stubs "0.5.3"]]}}
 
-  :prep-tasks [["garden" "once"]
-               ["less" "once"]])
+  :prep-tasks [["garden" "once"]])

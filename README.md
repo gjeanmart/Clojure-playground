@@ -8,7 +8,7 @@ Cheatsheet to refresh memory on Clojure and ClojureScript
 
 - Leiningen: TODOs
 - shadow-cljs: TODO
-
+- figwheel
 
 ## Installation
 
