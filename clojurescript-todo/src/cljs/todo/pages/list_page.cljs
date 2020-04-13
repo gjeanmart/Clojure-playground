@@ -10,8 +10,7 @@
 
 (defn- render-task []
   (let [edit? (reagent/atom false)
-        new-title (reagent/atom "")
-        ]
+        new-title (reagent/atom "")]
     (fn [list-id task]
       (let [id (:id task)
             title (:title task)
@@ -25,11 +24,10 @@
             delete #(rf/dispatch [::events/show-modal [modal/confirm-delete-task-modal list-id id]])]
         [:div {:key key
                :class "list-group-item d-flex justify-content-between align-items-center task"
-                :style {:min-height "75px"}
+               :style {:min-height "75px"}
                :on-click #(rf/dispatch [::events/update-task-field list-id id :done (not done)])}
          [:label {:class "d-flex align-items-center mb-0 cursor-pointer" :style {:width "100%"}}
-          [:input {:type "checkbox"
-                   :checked done}]
+          [:input {:type "checkbox" :checked done}]
           (if @edit?
             [:input {:type "text"
                      :class "form-control"

@@ -64,7 +64,7 @@
           next-id (count list)]
       [:div {:class "only-desktop bg-light border-right" :id "sidebar-wrapper"}
        [:div {:class "sidebar-heading d-flex justify-content-between align-items-center"}
-        [:a {:href "/#"} "TODO"] ;TODO add logo
+        [:a {:href "/#"} "(to-do)"] ;TODO add logo
         [:span {:class "fas fa-plus float-right cursor-pointer"
                 :title "Add list"
                 :on-click #(rf/dispatch [::events/show-modal [modal/add-list-modal next-id]])}]]
