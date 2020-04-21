@@ -2,6 +2,7 @@
   (:require
    [promesa.core :as p]
    [httpurr.client.node :as h]
+   [httpurr.status :as s]
    [cljs.core.async :refer [go go-loop]]
    [cljs.core.async.interop :refer [<p!]]))
 
@@ -53,12 +54,11 @@
     (println "call-http:" content)))
 
 (defn call-http-promise-async []
-  (p/promise
-   (go
-     (let [response (<p! (h/get "https://jsonplaceholder.typicode.com/todos/1"))]
-       (get-body response))
-     )
-   )
+  (p/create 
+   (fn [resolve reject]    
+     (go
+       (let [response (<p! (h/get "https://jsonplaceholder.typicode.com/todos/1"))]
+         (resolve (get-body response))))))
   )
 
 (defn call-multiple-http-async []
@@ -93,15 +93,36 @@
 
 (defn call-nested-http-async []
   (go
-    (let [response1 (<p! (h/get (str "https://jsonplaceholder.typicode.com/todos/1")))
+    (let [response1 (<p! (h/get "https://jsonplaceholder.typicode.com/todos/1"))
           content1 (get-body response1)
-          response2 (<p! (h/get (str "https://jsonplaceholder.typicode.com/todos/2")))
+          response2 (<p! (h/get "https://jsonplaceholder.typicode.com/todos/2"))
           content2 (get-body response2)
-          response3 (<p! (h/get (str "https://jsonplaceholder.typicode.com/todos/3")))
+          response3 (<p! (h/get "https://jsonplaceholder.typicode.com/todos/3"))
           content3 (get-body response3)
           content [content1 content2 content3]]
       (println "call-nested-http:" content))))
   
+(defn call-async-exception []
+  (go
+    (try
+      (let [result (<p! (p/rejected (ex-info "my error message" {})))]
+        (println "call-http:" result))
+      (catch js/Error ex (println (ex-cause ex))))))
+
+(defn call-http-async-with-exception-handler [url]
+  (p/create
+   (fn [resolve reject]
+     (go-loop [response (<p! (h/get url))]
+       (if (s/success? response)
+         (resolve (get-body response))
+         (reject (str "error [status:" (:status response) "]")))))))
+
+(defn call-http-async-with-exception-handler-short [url]
+  (p/create
+   #(go-loop [response (<p! (h/get url))]
+      (if (s/success? response)
+        (%1 (get-body response))
+        (%2 (str "error [status:" (:status response) "]"))))))
 
 
 (defn main! []
@@ -114,8 +135,17 @@
   (call-multiple-http-async)
   (call-synchronous-http-async)
   (call-nested-http-async)
-  ;(go
-  ;  (println "call-http-promise:" (<p! (call-http-promise))))
   (call-http-interop)
   (call-nested-http-interop)
-  )
+  (go
+    (println "call-http-promise:" (<p! (call-http-promise-async))))
+  (call-async-exception)
+  (go
+    (try 
+      (let [result (<p! (call-http-async-with-exception-handler-short "https://jsonplaceholder.typicode.com/todos/1"))]
+        (println "(1) success:" result))
+      (catch js/Error ex (println "(1) error:" (ex-cause ex))))
+    (try
+      (let [result (<p! (call-http-async-with-exception-handler-short "https://jsonplaceholder.typicode.com/todos/9999"))]
+        (println "(2) success:" result))
+      (catch js/Error ex (println "(2) error:" (ex-cause ex))))))
