@@ -1,0 +1,14 @@
+;; shadow-cljs configuration
+{:source-paths 
+ ["src"]
+
+ :dependencies
+ [[org.clojure/core.async "1.1.587"]
+  [funcool/promesa "5.1.0"]
+  [funcool/httpurr "2.0.0"]]
+
+ :builds
+ {:app {:target :node-script
+        :output-to "target/main.js"
+        :main main/main!
+        :devtools {:enabled false}}}}

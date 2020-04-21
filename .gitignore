@@ -1,24 +1,23 @@
-/out/
-/resources/public/js/compiled/
-/target/
-/*-init.clj
-/*.log
+target
+out
+*-init.clj
+*.log
+.hgignore
+build
+compiled
+.db
 
 # Leiningen
 /.lein-*
 /.nrepl-port
 
 # Node.js dependencies
-/node_modules/
+node_modules
 package-lock.json
 
 # shadow-cljs cache, port files
-/.shadow-cljs/
+.shadow-cljs
 
-# smart contracts
-/smart-contract/node_modules
-/smart-contract/build
-/smart-contract/.db
 
 
 
