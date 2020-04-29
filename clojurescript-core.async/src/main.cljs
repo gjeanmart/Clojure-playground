@@ -105,9 +105,9 @@
 (defn call-async-exception []
   (go
     (try
-      (let [result (<p! (p/rejected (ex-info "my error message" {})))]
+      (let [result (<p! (p/rejected (ex-info "my error message" {:bar "foo"})))]
         (println "call-http:" result))
-      (catch js/Error ex (println (ex-cause ex))))))
+      (catch js/Error ex (println (str "message:" (-> ex ex-cause ex-message) ", data:" (-> ex ex-cause ex-data)))))))
 
 (defn call-http-async-with-exception-handler [url]
   (p/create
@@ -124,28 +124,58 @@
         (%1 (get-body response))
         (%2 (str "error [status:" (:status response) "]"))))))
 
+(defn call-http-async-with-exception-handler2 [url]
+  (p/let [response (h/get url)]
+   (if (s/success? response)
+     (get-body response)
+     (throw (str "error [status:" (:status response) "]")))))
+
+
+
 
 (defn main! []
   (println "App loaded!")
-  (simple-interop)
-  (simple-async)
-  (simple-async-short)
-  (multiple-resolve-async)
-  (call-http-async)
-  (call-multiple-http-async)
-  (call-synchronous-http-async)
-  (call-nested-http-async)
-  (call-http-interop)
-  (call-nested-http-interop)
-  (go
-    (println "call-http-promise:" (<p! (call-http-promise-async))))
-  (call-async-exception)
-  (go
-    (try 
-      (let [result (<p! (call-http-async-with-exception-handler-short "https://jsonplaceholder.typicode.com/todos/1"))]
-        (println "(1) success:" result))
-      (catch js/Error ex (println "(1) error:" (ex-cause ex))))
-    (try
-      (let [result (<p! (call-http-async-with-exception-handler-short "https://jsonplaceholder.typicode.com/todos/9999"))]
-        (println "(2) success:" result))
-      (catch js/Error ex (println "(2) error:" (ex-cause ex))))))
+  ; (simple-interop)
+  ; (simple-async)
+  ; (simple-async-short)
+  ; (multiple-resolve-async)
+  ; (call-http-async)
+  ; (call-multiple-http-async)
+  ; (call-synchronous-http-async)
+  ; (call-nested-http-async)
+  ; (call-http-interop)
+  ; (call-nested-http-interop)
+  ; (go
+  ;   (println "call-http-promise:" (<p! (call-http-promise-async))))
+  ; (call-async-exception)
+  ; (go
+  ;   (try 
+  ;     (let [result (<p! (call-http-async-with-exception-handler-short "https://jsonplaceholder.typicode.com/todos/1"))]
+  ;       (println "(1) success:" result))
+  ;     (catch js/Error ex (println "(1) error:" (ex-cause ex))))
+  ;   (try
+  ;     (let [result (<p! (call-http-async-with-exception-handler-short "https://jsonplaceholder.typicode.com/todos/9999"))]
+  ;       (println "(2) success:" result))
+  ;     (catch js/Error ex (println "(2) error:" (ex-cause ex)))))
+  
+  ; (go
+  ;   (println "call-http-promise1:" (<p! (call-http-promise-async)))
+  ;   (println "sync message1")
+  ;   (println "call-http-promise2:" (<p! (call-http-promise-async)))
+  ;   (println "sync message2")
+  ;   (println "sync message3")
+  ;   (println "call-http-promise3:" (<p! (call-http-promise-async)))
+  ;   (println "call-http-promise4:" (<p! (call-http-promise-async)))
+  ;   (println "sync message4")
+  ;   )
+  ; (go
+  ;   (try
+  ;     (let [result (<p! (call-http-async-with-exception-handler2 "https://jsonplaceholder.typicode.com/todos/1"))]
+  ;       (println "success:" result))
+  ;     (catch js/Error ex (println "error:" (ex-message ex)))))
+  
+  (-> (call-http-async-with-exception-handler2 "https://jsonplaceholder.typicode.com/todos/1")
+      (p/then #(println "success:" %))
+      (p/catch #(println "error:" (ex-message %))))
+  
+  )
